@@ -2,9 +2,9 @@ import { getNames } from 'country-list';
 import axios from 'axios';
 import { useState } from 'react';
 
-const BookingForm = () => {
+export default function BookingForm() {
   const countries = getNames();
-  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -20,11 +20,29 @@ const BookingForm = () => {
     country: '',
   });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await axios.post('/api/bookings', formData);
+      alert('Booking Confirmed!');
+    } catch (error) {
+      setError('Failed to submit booking.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div className='bg-white p-6 shadow-md rounded-lg'>
         <h2 className='text-xl font-semibold'>Contact Detail</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           {/* Contact Information */}
           <div className='grid grid-col-1 md:grid-cols-2 gap-4 mt-4'>
             <div>
@@ -192,10 +210,9 @@ const BookingForm = () => {
           >
             {loading ? 'Proceesing...' : 'Confirm & Pay'}
           </button>
+          {error && <p className='text-red-500'>{error}</p>}
         </form>
       </div>
     </>
   );
-};
-
-export default BookingForm;
+}
