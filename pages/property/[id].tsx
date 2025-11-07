@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import PropertyDetail from "@/components/property/PropertyDetail";
 import BookingSection from "@/components/property/BookingSection";
 import ReviewSection from "@/components/property/ReviewSection";
-
+import Head from "next/head";
 import PropertyImage from "@/components/property/PropertyImages";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -40,9 +40,9 @@ export default function PropertyPage() {
 
   return (
     <>
-      <head>
+      <Head>
         <title>Property Details</title>
-      </head>
+      </Head>
       <main>
         <div className="">
           <PropertyImage property={property} />
